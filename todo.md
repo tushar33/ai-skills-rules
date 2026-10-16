@@ -1,3 +1,6 @@
+Claude Skills added
+- seo-audit, a11y-audit, pagespeed-debugger, gsc-indexing-debugger @Tushar
+
 Claude Skills to be added
 - Solution design @Parth -- use in platform, skills both places
 
@@ -11,7 +14,7 @@ Claude Skills to be added
 
 - Reverse engineering -- converting an existing code into specifications (parth inputs + https://mcpmarket.com/tools/skills/reverse-engineer-documenter)
 
-- Performance audit/review FE, BE
+- Performance audit/review BE (FE live-URL diagnosis covered by pagespeed-debugger)
 - Performance test suite planner @ashwin to share chat, @Manoj to complete
 
 - Security audit/review FE, BE
