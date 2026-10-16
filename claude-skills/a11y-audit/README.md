@@ -1,4 +1,4 @@
-# a11y-audit-skill
+# a11y-audit
 
 Repo-wide, read-only sweep for **missing or incomplete WCAG 2.2 AA
 practices** — landmarks, skip links, heading hierarchy, alt text, form

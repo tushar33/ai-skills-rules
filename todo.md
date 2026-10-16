@@ -1,5 +1,5 @@
 Claude Skills added
-- seo-audit-skill, a11y-audit-skill, pagespeed-debugger, gsc-indexing-debugger @Tushar
+- seo-audit, a11y-audit, pagespeed-debugger, gsc-indexing-debugger @Tushar
 
 Claude Skills to be added
 - Solution design @Parth -- use in platform, skills both places
