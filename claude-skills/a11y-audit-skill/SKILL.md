@@ -31,10 +31,9 @@ ask to add a new category. With no arguments, run every category.
 ## Workflow — follow IN ORDER
 
 ### 1. Load both files
-Read `skills/a11y-audit/categories.md` (generic definitions) and
-`skills/a11y-audit/project-checklist.md` (this project's known state — if
-it doesn't exist yet, this is the first run on this project; create it as
-you go).
+Read `categories.md` (generic definitions) and `project-checklist.md`
+(this project's known state — if it doesn't exist yet, this is the first
+run on this project; create it as you go).
 
 ### 2. For each category in scope
 
@@ -105,11 +104,11 @@ entries even when `RESOLVED` — update status/date, never delete.
   feature) belongs in `/audit-mistakes` instead — ask before adding it here.
 
 ## Using this skill in a new project
-Copy `categories.md` and this file (`a11y-audit.md`) into that project's
-`skills/a11y-audit/` unchanged, symlink `a11y-audit.md` into its
-`.claude/commands/`, and let the first `/a11y-audit` run create that
-project's own `project-checklist.md` from scratch via the discovery path in
-step 2. Never copy a `project-checklist.md` from one project into
+Copy `categories.md` and this file (`SKILL.md`) into that project's
+a11y-audit skill folder unchanged, wire `SKILL.md` up as your `/a11y-audit`
+command, and let the first run create that project's own
+`project-checklist.md` from scratch via the discovery path in step 2.
+Never copy a `project-checklist.md` from one project into
 another — its paths and current-state findings are specific to the
 codebase that produced them and will actively mislead a different one.
 

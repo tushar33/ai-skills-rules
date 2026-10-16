@@ -2,8 +2,8 @@
 
 Framework-agnostic. This file has **no hardcoded paths** — it defines what
 to check and why, plus discovery hints for finding the relevant
-implementation in an unfamiliar codebase. Copy this file (and
-`a11y-audit.md`) into any project's `skills/a11y-audit/` unchanged. The
+implementation in an unfamiliar codebase. Copy this file (and `SKILL.md`) into any project's a11y-audit skill
+folder unchanged. The
 project-specific instance — actual file paths, current state, verification
 recipes for *this* codebase — lives in a separate `project-checklist.md`
 that starts empty (or nearly empty) in a new project and gets built up as

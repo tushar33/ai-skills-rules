@@ -2,8 +2,8 @@
 
 Framework-agnostic. This file has **no hardcoded paths** — it defines what
 to check and why, plus discovery hints for finding the relevant
-implementation in an unfamiliar codebase. Copy this file (and `seo-audit.md`)
-into any project's `skills/seo-audit/` unchanged. The project-specific
+implementation in an unfamiliar codebase. Copy this file (and `SKILL.md`)
+into any project's seo-audit skill folder unchanged. The project-specific
 instance — actual file paths, current state, verification recipes for
 *this* codebase — lives in a separate `project-checklist.md` that starts
 empty (or nearly empty) in a new project and gets built up as the skill runs.

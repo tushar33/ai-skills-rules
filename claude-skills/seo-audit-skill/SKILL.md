@@ -32,10 +32,9 @@ ask to add a new category. With no arguments, run every category.
 ## Workflow — follow IN ORDER
 
 ### 1. Load both files
-Read `skills/seo-audit/categories.md` (generic definitions) and
-`skills/seo-audit/project-checklist.md` (this project's known state — if it
-doesn't exist yet, this is the first run on this project; create it as you
-go).
+Read `categories.md` (generic definitions) and `project-checklist.md`
+(this project's known state — if it doesn't exist yet, this is the first
+run on this project; create it as you go).
 
 ### 2. For each category in scope
 
@@ -76,7 +75,7 @@ evidence of a clean sweep.
 
 ### 5. Save the report
 Write the full report from step 4 — every audited category's status block
-plus the summary table — to `skills/seo-audit/reports/<YYYY-MM-DD>.md` in
+plus the summary table — to `reports/<YYYY-MM-DD>.md` in
 this project (create the `reports/` directory if it doesn't exist yet). If
 a report already exists for today's date, append a run suffix instead of
 overwriting it (`<YYYY-MM-DD>-2.md`, `-3.md`, ...). Head the file with the
@@ -104,11 +103,11 @@ entries even when `RESOLVED` — update status/date, never delete.
   feature) belongs in `/audit-mistakes` instead — ask before adding it here.
 
 ## Using this skill in a project
-Copy `categories.md` and this file (`seo-audit.md`) into that project's
-`skills/seo-audit/` unchanged, symlink `seo-audit.md` into its
-`.claude/commands/`, and let the first `/seo-audit` run create that
-project's own `project-checklist.md` from scratch via the discovery path in
-step 2. `project-checklist.md` is always project-specific — never copy one
+Copy `categories.md` and this file (`SKILL.md`) into that project's
+seo-audit skill folder unchanged, wire `SKILL.md` up as your `/seo-audit`
+command, and let the first run create that project's own
+`project-checklist.md` from scratch via the discovery path in step 2.
+`project-checklist.md` is always project-specific — never copy one
 project's checklist into another; each project builds its own from scratch.
 
 ## Rules
