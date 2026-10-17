@@ -32,8 +32,14 @@ Every finding is re-verified against current code and reported as
 `STILL_OPEN`, `PARTIALLY_RESOLVED`, `RESOLVED`, or `NOT_APPLICABLE`. The
 audit changes no code — fixes go through a separate, explicit step.
 
-30 categories (`A11Y-01`–`A11Y-30`) cover WCAG 2.2 Level A and AA — see
-`categories.md` for full detail.
+30 categories (`A11Y-01`–`A11Y-30`) cover most of WCAG 2.2 Level A and AA —
+see `categories.md` for full detail. This is not a 1:1 mapping of every AA
+success criterion: some are folded into a broader category (e.g. A11Y-04
+checks page language but not in-page language changes, SC 3.1.2; A11Y-08
+checks error identification/status messages but not error-correction
+suggestions, SC 3.3.3) and a few aren't covered yet (e.g. SC 1.4.13, content
+on hover/focus). Treat an audit pass here as "no gap found in the checked
+categories," not a certification of full WCAG 2.2 AA conformance.
 
 ## Growing this skill
 

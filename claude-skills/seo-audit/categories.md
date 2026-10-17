@@ -22,7 +22,11 @@ Yandex Webmaster, etc.) attribute crawl/index data to this property.
 issues go undetected until they show up as traffic loss.
 **Generic detection:** Search the app's root HTML template for verification
 meta tags (`msvalidate.01`, `google-site-verification`, `yandex-verification`,
-etc.) and the static-assets root for verification stub files.
+etc.) and the static-assets root for verification stub files. These checks
+only cover in-repo evidence — verification can also be done entirely outside
+the codebase via a DNS TXT/CNAME record or Search Console's own domain-property
+flow, so ask whether the property is already verified that way (or check DNS/
+Search Console directly) before reporting this as a gap.
 **Discovery hints:** CRA/Vite → `public/index.html` + `public/`; Next.js →
 `app/layout.tsx`/`pages/_document.tsx` + `public/`; plain server app →
 the base layout template + static file root.
@@ -138,13 +142,17 @@ more than one truncation/formatting step runs on the same string before it
 reaches the page (see the sequential-double-truncation bug signature in
 `/audit-mistakes` if this codebase has one). Independently of the
 budget-shortfall check, sample rendered title/description word counts
-directly (not just character totals against the budget) and flag any that
-are thin in absolute terms — roughly under 5-8 words for a description or
-under 2-3 words for a title beyond the entity name itself — since a value
-can clear a lenient char-count check while still reading as too sparse to
-be a genuine descriptive snippet; trace thin hits back to whether the
-*source data* for that entity is itself sparse (a content gap, likely
-recurring across many similar entities) vs. a one-off rendering bug.
+directly (not just character totals against the budget) — roughly under 5-8
+words for a description or under 2-3 words for a title beyond the entity
+name itself is a *prompt to look closer*, not standalone evidence of a gap
+on its own (Google doesn't enforce a fixed length and can truncate/rewrite
+snippets by device width anyway). Read the actual rendered text before
+flagging anything: only report a gap when it reads as genuinely
+non-descriptive (e.g. just the entity name repeated, boilerplate, or
+truncated mid-word), not merely short. For a confirmed thin/non-descriptive
+case, trace it back to whether the *source data* for that entity is itself
+sparse (a content gap, likely recurring across many similar entities) vs. a
+one-off rendering bug.
 **Discovery hints:** grep the head-management usage for where
 title/description props are set (or not set, falling through to a
 default); grep for every function that truncates/slices a description
@@ -218,11 +226,16 @@ backend-generated sitemap route.
 
 ## SEO-10 — hreflang / i18n signals
 **What:** For multilingual sites, `hreflang` alternates linking each
-language variant of a page to the others (including `x-default`).
+language variant of a page to the others.
 **Why:** Without it, search engines may serve the wrong language variant to
 users, or treat variants as duplicate content.
 **Generic detection:** Check whether pages with a language/locale switcher
 also emit `<link rel="alternate" hreflang="...">` tags for each variant.
+`x-default` is only expected when the site serves a fallback page for
+visitors whose language/region doesn't match any listed variant (e.g. a
+locale-picker or a default-language page) — flag its absence only when such
+a fallback exists; it is not a universal requirement for every multilingual
+site.
 **Discovery hints:** grep for `hreflang`, or the i18n library's routing
 config for locale-prefixed routes.
 **N/A when:** site is genuinely single-language with no locale routing.
@@ -240,8 +253,10 @@ generated link pointing at a route that doesn't resolve.
 **Discovery hints:** grep for `<Link to=`/`<a href=`/`router.push` patterns
 that build URLs from data rather than static routes (highest-risk for
 staleness after entity renames/merges).
-**N/A when:** site has no legacy-URL history (nothing to have accumulated
-redirects from).
+**N/A when (redirect-chain check only):** site has no legacy-URL history
+(nothing to have accumulated redirects from). The broken-internal-link check
+still applies regardless — a new site with no redirect history can still
+have internal links pointing at routes that don't resolve.
 
 ---
 

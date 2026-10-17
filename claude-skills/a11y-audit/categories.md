@@ -52,16 +52,23 @@ on every single page load before reaching that page's actual content.
 ---
 
 ## A11Y-03 — Heading hierarchy
-**What:** Exactly one real `<h1>` per page (visible or legitimately hidden —
-off-screen positioning, not `display:none`), heading levels that descend
-without skipping (h1→h2→h3, never h1→h3), and no non-heading content
-(nav items, buttons, labels) styled via a heading component purely for its
-visual weight.
+**What:** Headings convey the actual content structure of the page: a real
+`<h1>` for the page's main topic (visible or legitimately hidden —
+off-screen positioning, not `display:none`), and heading levels that
+reflect real nesting of sections/subsections. One `<h1>` and a strict
+no-skip descent (h1→h2→h3, never h1→h3) are the WAI-recommended default and
+the right fast-path check — but they're not themselves hard WCAG
+requirements; a level skip can be valid when it closes a subsection with no
+content at the intermediate level. Always flag non-heading content (nav
+items, buttons, labels) styled via a heading component purely for its
+visual weight — that's a structural error regardless.
 **WCAG SC:** 1.3.1 Info and Relationships (A) · 2.4.6 Headings and Labels
 (AA).
 **Why:** Screen reader users jump between headings as a primary content
-outline. A missing/duplicated h1, a level skip, or a heading-styled button
-breaks that outline or creates false landmarks.
+outline. A missing h1, a heading structure that doesn't reflect real
+content relationships, or a heading-styled button breaks that outline or
+creates false landmarks — a heading that doesn't describe its section's
+topic is equally a failure even if the levels never skip.
 **Generic detection:** Find the shared heading/typography components (often
 `H1`..`H5` wrappers or a `Heading` component with an `as`/`level` prop) and
 grep for their usage on non-title content — buttons, nav items, form field
@@ -225,8 +232,9 @@ blanket `outline: none`/`box-shadow: none` without a replacement); modals/
 dialogs trap focus while open, close on Escape (unless there's a specific,
 justified reason not to, with an alternative dismiss path always present),
 and restore focus to the triggering element on close.
-**WCAG SC:** 2.4.7 Focus Visible (AA) · 2.4.11 Focus Appearance (AA, WCAG
-2.2) · 2.4.3 Focus Order (A) · 2.1.2 No Keyboard Trap (A).
+**WCAG SC:** 2.4.7 Focus Visible (AA) · 2.4.3 Focus Order (A) · 2.1.2 No
+Keyboard Trap (A). (Focus being obscured by a sticky/fixed overlay is a
+separate criterion, 2.4.11 Focus Not Obscured (Minimum) — see A11Y-23.)
 **Why:** Sighted keyboard users rely entirely on the focus indicator to
 know where they are. A modal that disables Escape with no alternative
 close path, or that doesn't restore focus, disorients or traps keyboard
@@ -348,13 +356,26 @@ if the library ships one.
 ## A11Y-16 — Target size (WCAG 2.2)
 **What:** Interactive targets (buttons, links, carousel pagination dots,
 close icons) are at least 24×24 CSS pixels, or have an invisible padded hit-
-area of that size even if the visible glyph is smaller.
+area of that size even if the visible glyph is smaller — unless the target
+qualifies for one of SC 2.5.8's own exceptions (see below), in which case a
+smaller target is still conforming.
 **WCAG SC:** 2.5.8 Target Size Minimum (AA, WCAG 2.2).
 **Why:** Small targets are hard to hit precisely for users with motor
 impairments or tremor, especially on touch devices.
 **Generic detection:** Check carousel pagination dots, small icon-only
 close/toggle buttons, and inline action icons for their actual rendered
-box size (including padding) versus the 24×24px floor.
+box size (including padding) versus the 24×24px floor. Before flagging an
+undersized target, check whether an exception applies: **Spacing** (the
+target is smaller but surrounded by enough unobstructed space that a
+24px-diameter circle centered on it doesn't overlap another target's);
+**Equivalent** (an equivalent same-function target elsewhere on the page
+already meets 24×24, e.g. a larger "Close" button alongside a small X icon);
+**Inline** (the target sits within a sentence/block of text, like a text
+link); **User agent control** (the target's size is determined by the
+browser/OS and not styled by this app, e.g. a native `<input type=radio>`);
+or **Essential** (a specific size is required to convey the information
+being presented, e.g. a map pin at a precise coordinate). Only flag targets
+with no applicable exception.
 **Discovery hints:** Same carousel/pagination components as A11Y-15; any
 small icon-button component in the shared UI kit.
 **N/A when:** never, though violations here are usually Low/Medium
@@ -478,16 +499,27 @@ form's paste/`onPaste` handling and CAPTCHA implementation, if any.
 slider/range control, swipe-to-dismiss) also has a single-pointer
 alternative (tap/click buttons, keyboard arrows) that achieves the same
 result; multi-point or path-based gestures (pinch, multi-finger swipe)
-have a single-pointer equivalent.
+have a single-pointer equivalent. Separately, any action triggered by a
+single-pointer gesture (click, tap) does not fire on `pointerdown`/
+`mousedown`/`touchstart` alone — it completes on `pointerup`/`click` (the
+up-event), and the user can still abort it (e.g. by dragging off the
+target before releasing) or undo it after the fact.
 **WCAG SC:** 2.5.1 Pointer Gestures (A) · 2.5.2 Pointer Cancellation (A) ·
 2.5.7 Dragging Movements (AA, WCAG 2.2).
 **Why:** Users with motor impairments or tremor, or anyone using a switch/
 head-pointer device, often cannot perform a precise drag or multi-touch
-gesture at all.
+gesture at all. An action that fires on pointer-down instead of pointer-up
+also gives no chance to abort an accidental activation before it takes
+effect — a problem for anyone whose pointer control is imprecise.
 **Generic detection:** Find any drag-and-drop library usage (`react-dnd`,
 `dnd-kit`, native HTML5 drag events, a custom pointer-move-based slider)
 and check for an accompanying non-drag control (up/down reorder buttons,
 a numeric input alongside a range slider, arrow-key support on a slider).
+Separately, grep interactive elements for handlers bound to
+`onPointerDown`/`onMouseDown`/`onTouchStart` that trigger a consequential
+action directly (not just visual press-state feedback) — these should fire
+on the up-event instead, or offer an abort (e.g. moving off the target) or
+an undo.
 **Discovery hints:** Reordering UIs (playlist, kanban, image-gallery
 reorder), custom range/slider components, swipe-to-dismiss card UIs.
 **N/A when:** the app has no drag-based or multi-touch-gesture interactions
@@ -524,18 +556,24 @@ header, footer, or banner component; check for `scroll-margin-top`/
 ## A11Y-24 — Downloadable document accessibility
 **What:** Linked PDFs, Word/Office documents, or other downloadable files
 are themselves accessible (tagged PDF with a real structure/reading order,
-not a flat scanned image) — or, at minimum, the link text indicates the
-file type and size before download, and an HTML equivalent is offered
-where feasible.
+not a flat scanned image), or an equivalent accessible version (e.g. an
+HTML page with the same content) is offered. Link text mentioning the file
+type and size is good practice but is a separate usability courtesy, not a
+substitute for the document itself being accessible.
 **WCAG SC:** 1.1.1 Non-text Content (A) · 1.3.1 Info and Relationships (A)
 · 3.2.4 Consistent Identification (AA) — as applied to link text.
 **Why:** An untagged/scanned PDF is often completely opaque to a screen
-reader (just an image, or reading order scrambled); unlabeled file
-type/size surprises users on slow connections or metered data.
+reader (just an image, or reading order scrambled) regardless of how well
+its link is labeled — labeling the file type/size helps a sighted user
+decide whether to download it, but does nothing for someone who can't read
+the document's actual content once they do.
 **Generic detection:** Grep for `.pdf`/`.docx`/download-link patterns; for
-each, check whether the link text mentions the file type/size, and (if the
-files are produced by this app, not just linked) whether the generation
-pipeline produces tagged/accessible output.
+each, check whether the document itself is tagged/accessible or an
+accessible equivalent is offered — do not treat descriptive link text alone
+as satisfying this category. Separately (as additional usability guidance,
+not a substitute), check whether the link text mentions the file type/size.
+If the files are produced by this app rather than just linked, check
+whether the generation pipeline produces tagged/accessible output.
 **Discovery hints:** Any "download brochure/report/certificate" feature;
 document-generation libraries (`pdf-lib`, server-side PDF rendering) if the
 app generates PDFs itself rather than only linking to pre-made ones.
