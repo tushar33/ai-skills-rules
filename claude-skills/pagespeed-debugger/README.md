@@ -67,8 +67,9 @@ node scripts/compare.cjs <reportA.json> <reportB.json>
 ```
 
 Reports are saved under `reports/pagespeed-debugger/raw/` by default
-(gitignore this directory). Requires Node 18+ (uses global `fetch`), no npm
-dependencies.
+(gitignore this directory). Requires Node 18.20+ (the pinned local-Lighthouse
+version's own minimum; `collect.cjs`'s PSI/anonymous paths need only global
+`fetch`, available since Node 18.0), no npm dependencies.
 
 ## What it does NOT do
 

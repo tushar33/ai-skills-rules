@@ -366,8 +366,10 @@ impairments or tremor, especially on touch devices.
 close/toggle buttons, and inline action icons for their actual rendered
 box size (including padding) versus the 24×24px floor. Before flagging an
 undersized target, check whether an exception applies: **Spacing** (the
-target is smaller but surrounded by enough unobstructed space that a
-24px-diameter circle centered on it doesn't overlap another target's);
+target is smaller, but a 24px-diameter circle centered on it does not
+intersect any other target, nor the 24px circle centered on another
+undersized target — the circles themselves must stay clear of each other,
+not just the visible targets);
 **Equivalent** (an equivalent same-function target elsewhere on the page
 already meets 24×24, e.g. a larger "Close" button alongside a small X icon);
 **Inline** (the target sits within a sentence/block of text, like a text
@@ -499,11 +501,15 @@ form's paste/`onPaste` handling and CAPTCHA implementation, if any.
 slider/range control, swipe-to-dismiss) also has a single-pointer
 alternative (tap/click buttons, keyboard arrows) that achieves the same
 result; multi-point or path-based gestures (pinch, multi-finger swipe)
-have a single-pointer equivalent. Separately, any action triggered by a
-single-pointer gesture (click, tap) does not fire on `pointerdown`/
-`mousedown`/`touchstart` alone — it completes on `pointerup`/`click` (the
-up-event), and the user can still abort it (e.g. by dragging off the
-target before releasing) or undo it after the fact.
+have a single-pointer equivalent. Separately, a single-pointer gesture
+(click, tap) satisfies SC 2.5.2 by any one of: no function fires on the
+down-event at all; the function fires on the up-event, with the down-event
+only giving visual press-state feedback; the function fires on the
+down-event but the up-event can reverse/abort its outcome before it takes
+effect (e.g. dragging off the target before releasing); or completion on
+the down-event is essential to the interaction (e.g. a piano-key/game-pad
+style control where waiting for release would break the interaction itself)
+— the last one is a narrow, deliberate exception, not a default.
 **WCAG SC:** 2.5.1 Pointer Gestures (A) · 2.5.2 Pointer Cancellation (A) ·
 2.5.7 Dragging Movements (AA, WCAG 2.2).
 **Why:** Users with motor impairments or tremor, or anyone using a switch/
@@ -517,9 +523,11 @@ and check for an accompanying non-drag control (up/down reorder buttons,
 a numeric input alongside a range slider, arrow-key support on a slider).
 Separately, grep interactive elements for handlers bound to
 `onPointerDown`/`onMouseDown`/`onTouchStart` that trigger a consequential
-action directly (not just visual press-state feedback) — these should fire
-on the up-event instead, or offer an abort (e.g. moving off the target) or
-an undo.
+action directly (not just visual press-state feedback). Only flag these if
+none of SC 2.5.2's conformance paths applies: confirm the down-event isn't
+reversible/abortable on the up-event, and that down-event completion isn't
+essential to the control's actual function (e.g. a press-and-hold
+game/instrument control) before reporting it as a failure.
 **Discovery hints:** Reordering UIs (playlist, kanban, image-gallery
 reorder), custom range/slider components, swipe-to-dismiss card UIs.
 **N/A when:** the app has no drag-based or multi-touch-gesture interactions
