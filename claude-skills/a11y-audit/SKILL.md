@@ -72,9 +72,14 @@ For each category output:
 - **Category ID + title**
 - **Status:** `STILL_OPEN` (gap confirmed), `RESOLVED` (fixed since last
   checked — say what changed and when), `PARTIALLY_RESOLVED` (some but not
-  all named locations fixed — list which remain), or `NOT_APPLICABLE`
-  (category doesn't apply to this project — say why, per `categories.md`'s
-  "N/A when" note)
+  all named locations fixed — list which remain), `NOT_APPLICABLE`
+  (category doesn't apply to *this project* — say why, per `categories.md`'s
+  "N/A when" note), or `NOT_TESTED` (the category applies, but this skill's
+  own methodology can't evaluate it — e.g. A11Y-30's real-browser/
+  assistive-technology testing — say why, per `categories.md`'s
+  "N/A when" note; never conflate this with `NOT_APPLICABLE`, which means
+  the category itself doesn't apply to the project, not that this skill
+  can't check it)
 - **Where it's missing:** exact file(s)/line(s)
 - **WCAG Success Criterion:** the specific SC (e.g. "2.4.7 Focus Visible")
 - **Severity:** Critical / High / Medium / Low, judged by how many users are

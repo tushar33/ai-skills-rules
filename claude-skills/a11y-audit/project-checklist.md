@@ -18,7 +18,7 @@ status/date instead so history survives across runs.
 
 If your project has more than one actively-developed codebase or branch
 serving the same product (e.g. a legacy version and an in-progress
-redesign), tag each entry's status for both — see `a11y-audit.md`'s rules
+redesign), tag each entry's status for both — see `SKILL.md`'s rules
 section. If not, ignore this and just track one status per category.
 
 ---

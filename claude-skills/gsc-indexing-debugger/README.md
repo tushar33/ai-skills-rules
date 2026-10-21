@@ -44,8 +44,12 @@ Search Console state:
 3. In [Search Console](https://search.google.com/search-console) → your
    property → **Settings → Users and permissions → Add user** → paste the
    service account's `client_email` → grant **Restricted** (read-only).
-4. Save the JSON key as `.gsc-service-account.json` at the repo root
-   (gitignored — never commit it), or set `GSC_SERVICE_ACCOUNT_KEY_PATH`.
+4. Save the JSON key as `.gsc-service-account.json` next to this skill's own
+   `SKILL.md`/`scripts/` (wherever you've copied this skill to — not
+   necessarily your project's own repo root; `defaultKeyPath()` in
+   `scripts/lib/gsc-api-client.cjs` resolves relative to this skill's own
+   folder, two levels up from `scripts/lib`), gitignored — never commit it —
+   or set `GSC_SERVICE_ACCOUNT_KEY_PATH` to point anywhere else.
 5. For a Domain property, set `"domain"` in
    `gsc-indexing-debugger.config.json` (copy from the `.example.json` here)
    or pass `--site-url sc-domain:example.com`.

@@ -723,13 +723,14 @@ especially for ARIA live regions and custom form controls).
 **Generic detection/limitation:** A code-review skill running in this
 environment **cannot** drive real browsers or real assistive technology —
 there is no automated substitute for this category from static analysis
-alone. Report this category as its status genuinely is (`NOT_APPLICABLE`
-to this skill's methodology, not to the project) rather than silently
+alone. Report this category as its status genuinely is (`NOT_TESTED` —
+this skill's methodology can't evaluate it, which is not the same claim as
+`NOT_APPLICABLE`, i.e. that the category doesn't apply to the project: it
+very much does apply, this skill just can't check it) rather than silently
 omitting it or guessing a pass. If the project has cross-browser AT test
 results from another source (QA team, a paid AT testing service), record
 a pointer to where those live instead of attempting to reproduce them here.
 **Discovery hints:** N/A.
-**N/A when:** always, for this skill specifically — include the category
-in every report anyway, explicitly marked `NOT_APPLICABLE` with this
-reasoning, so nobody mistakes its absence from the findings for a clean
-pass.
+**N/A when:** never — this category always applies; report it every time as
+`NOT_TESTED` with this reasoning, so nobody mistakes its absence from the
+findings for a clean pass.

@@ -78,8 +78,9 @@ Report `STILL_OPEN` or `NOT_YET_AUDITED` explicitly — silence is not
 evidence of a clean sweep.
 
 ### 5. Save the report
-Write the full report from step 4 — every audited category's status block
-plus the summary table — to `reports/<YYYY-MM-DD>.md` in
+Write the full report from step 4 — every category's status block,
+including `NOT_YET_AUDITED` blocks for categories outside this run's
+scope, plus the summary table — to `reports/<YYYY-MM-DD>.md` in
 this project (create the `reports/` directory if it doesn't exist yet). If
 a report already exists for today's date, append a run suffix instead of
 overwriting it (`<YYYY-MM-DD>-2.md`, `-3.md`, ...). Head the file with the
