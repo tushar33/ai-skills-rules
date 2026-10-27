@@ -80,8 +80,11 @@ For each category output:
   "N/A when" note; never conflate this with `NOT_APPLICABLE`, which means
   the category itself doesn't apply to the project, not that this skill
   can't check it)
-- **Where it's missing:** exact file(s)/line(s)
-- **WCAG Success Criterion:** the specific SC (e.g. "2.4.7 Focus Visible")
+- **Where it's missing:** exact file(s)/line(s) — omit for `NOT_APPLICABLE`/
+  `NOT_TESTED`, which have no location to cite
+- **WCAG Success Criterion:** the specific SC (e.g. "2.4.7 Focus Visible") —
+  omit for `NOT_APPLICABLE`/`NOT_TESTED`; for `NOT_TESTED`, state the reason
+  testing was unavailable instead
 - **Severity:** Critical / High / Medium / Low, judged by how many users are
   blocked and how core the affected flow is — not by SC level alone
 - **Why it matters:** who is affected and how, from `categories.md`

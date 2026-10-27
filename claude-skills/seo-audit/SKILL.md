@@ -84,7 +84,10 @@ scope, plus the summary table — to `reports/<YYYY-MM-DD>.md` in
 this project (create the `reports/` directory if it doesn't exist yet). If
 a report already exists for today's date, append a run suffix instead of
 overwriting it (`<YYYY-MM-DD>-2.md`, `-3.md`, ...). Head the file with the
-run's scope (all categories, or the specific IDs requested) and the date.
+run's scope (all categories, or the specific IDs requested) and the date. A
+`NOT_YET_AUDITED` block only needs its category ID, title, and status —
+never fabricate a location, cause, or fix reference for a category this run
+didn't check.
 This is the durable, shareable record of *this specific run's* full
 output — distinct from `project-checklist.md`, which only tracks the
 cumulative last-known state per category, not a given run's complete
